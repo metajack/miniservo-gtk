@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <template class="MiniServoAppWindow" parent="GtkApplicationWindow">
+    <property name="title" translatable="yes">miniservo</property>
+    <property name="default-width">1280</property>
+    <property name="default-height">1024</property>
+    <child>
+      <object class="GtkBox" id="vbox">
+        <property name="visible">True</property>
+        <property name="orientation">vertical</property>
+        <child>
+          <object class="GtkBox" id="header_box">
+            <property name="visible">True</property>
+            <property name="orientation">horizontal</property>
+            <child>
+              <object class="GtkButton" id="back-button">
+                <property name="label">&#9664;</property>
+                <property name="visible">True</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkButton" id="fwd-button">
+                <property name="label">&#9654;</property>
+                <property name="visible">True</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkEntry" id="urlbar">
+                <property name="visible">True</property>
+                <property name="hexpand">True</property>
+              </object>
+            </child>
+          </object>
+        </child>
+      </object>
+    </child>
+  </template>
+</interface>
