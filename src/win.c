@@ -2,9 +2,13 @@
 #include <GL/gl.h>
 #include <math.h>
 #include <string.h>
+#include <assert.h>
+
+#include <include/capi/cef_browser_capi.h>
 
 #include "app.h"
 #include "win.h"
+#include "gcef.h"
 #include "tegtkgl.h"
 
 struct _MiniServoAppWindow {
@@ -92,14 +96,24 @@ MiniServoAppWindow *miniservo_app_window_new(MiniServoApp *app) {
 
   gtk_widget_show_all(GTK_WIDGET(win));
 
-  /* ServoClient *client = new ServoClient(); */
-  /* CefWindowInfo windowInfo; */
-  /* windowInfo.SetAsWindowless(0, false); */
-  /* CefBrowserSettings browserSettings; */
-  /* CefRefPtr<CefBrowser> browser = CefBrowserHost::CreateBrowserSync( */
-  /*   windowInfo, client, "http://asdf.com/", browserSettings, nullptr); */
-  
   /* g_timeout_add_full(1000, 10, draw_the_gl, gl, 0); */
+
+  cef_window_info_t window_info = {};
+  window_info.parent_window = (cef_window_handle_t)win;
+  
+  cef_browser_settings_t browser_settings = {};
+  browser_settings.size = sizeof(cef_browser_settings_t);
+
+  cef_string_t *initial_url = cef_string_userfree_alloc();
+  memset(initial_url, 0, sizeof(cef_string_t));
+  assert(initial_url);
+  cef_string_from_ascii("http://metajack.im", sizeof("http://metajack.im") - 1, initial_url);
+
+  GCefClient *client = gcef_client_new();
+
+  cef_browser_host_create_browser(
+    &window_info, &client->client, initial_url,
+    &browser_settings, NULL);
 
   return win;
 }
